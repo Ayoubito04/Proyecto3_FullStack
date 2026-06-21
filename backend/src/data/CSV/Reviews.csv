@@ -1,0 +1,31 @@
+"ID",GAME ID,USER ID,GAME TITLE,USER NAME,SCORE,TITLE,COMMENT,HELPFUL VOTES,CREATED AT
+1,1,1,The Witcher 3: Wild Hunt,Carlos Martínez,10,Obra maestra absoluta,"El mejor juego de rol de todos los tiempos. La historia, el mundo y los personajes son incomparables.",245,2024-01-16
+2,1,2,The Witcher 3: Wild Hunt,Lucia Fernández,9,Increíble pero largo,"Impresionante en todos los aspectos, aunque puede hacerse algo largo con tanto contenido secundario.",130,2024-01-22
+3,2,3,Cyberpunk 2077,Miguel López,8,Recuperado con creces,"Después de los parches, Night City es una joya. La historia de V es magnífica.",88,2024-02-05
+4,2,4,Cyberpunk 2077,Sara González,7,Bueno pero no extraordinario,El mundo es impresionante pero la IA de los NPCs deja que desear incluso tras los parches.,45,2024-02-12
+5,3,5,Elden Ring,David Rodríguez,10,La cumbre del género,FromSoftware ha creado su obra maestra. El mundo abierto y el diseño de jefes es incomparable.,312,2024-02-18
+6,3,1,Elden Ring,Carlos Martínez,9,Difícil pero justo,El reto es enorme pero cada victoria se siente merecida. Los paisajes son majestuosos.,189,2024-02-20
+7,4,6,Counter-Strike 2,Ana Sánchez,8,El mejor FPS táctico,La precisión del gameplay es inigualable. Los nuevos mapas están muy bien rediseñados.,156,2024-03-03
+8,4,5,Counter-Strike 2,David Rodríguez,9,Mejora sustancial sobre GO,El motor Source 2 ha dado un soplo de aire fresco a la franquicia. Muy competitivo.,201,2024-03-08
+9,5,7,Red Dead Redemption 2,Pablo Hernández,10,El juego más bonito,Gráficamente es increíble y la historia de Arthur Morgan te rompe el corazón.,278,2024-03-12
+10,5,8,Red Dead Redemption 2,Marta Jiménez,9,Épico en todos los sentidos,El mundo de Red Dead 2 es tan detallado que parece real. Una experiencia única.,167,2024-03-15
+11,11,4,Hollow Knight,Sara González,10,Indie perfecto,Hollow Knight demuestra que los grandes presupuestos no son necesarios para crear algo extraordinario.,220,2024-03-18
+12,12,8,Stardew Valley,Marta Jiménez,10,Adictivo y relajante,El juego perfecto para desconectar. Horas y horas de contenido sin darse cuenta.,198,2024-03-22
+13,13,9,Hades,Javier García,10,Roguelike perfecto,Supergiant ha definido el género. Cada run es fresca gracias a la narrativa progresiva.,245,2024-03-28
+14,20,10,Baldur's Gate 3,Elena Torres,10,El RPG definitivo,Larian ha creado el RPG más completo y profundo jamás visto. Una proeza narrativa.,289,2024-04-02
+15,20,1,Baldur's Gate 3,Carlos Martínez,10,Experiencia generacional,BG3 redefine lo que puede ser un RPG de computadora. Absolutamente imprescindible.,334,2024-04-05
+16,6,11,GTA V,Alejandro Ruiz,8,Clásico que resiste el tiempo,GTA Online sigue siendo increíblemente divertido después de tantos años.,112,2024-04-08
+17,7,12,Minecraft,Carmen Moreno,10,Ilimitado en posibilidades,No hay juego más creativo que Minecraft. Cada mundo es una nueva aventura.,278,2024-04-12
+18,47,13,Deep Rock Galactic,Raúl Díaz,10,El mejor cooperativo,ROCK AND STONE! El juego cooperativo más divertido que he jugado jamás.,234,2024-04-16
+19,49,14,It Takes Two,Isabel Álvarez,10,Obligatorio en pareja,El mejor juego cooperativo de la historia. Jugamos mi pareja y yo y fue mágico.,267,2024-04-19
+20,50,10,Disco Elysium,Elena Torres,10,Literatura jugable,"No es un juego, es una novela interactiva de altísimo nivel. Arte en estado puro.",198,2024-04-22
+21,24,3,God of War,Miguel López,10,Kratos al máximo nivel,Santa Monica ha creado algo épico. La relación entre Kratos y Atreus es el corazón del juego.,256,2024-04-25
+22,21,4,Sekiro: Shadows Die Twice,Sara González,9,El más difícil y satisfactorio,El sistema de combate de Sekiro es el más pulido de FromSoftware. Cada jefe es un puzzle.,178,2024-04-28
+23,62,9,Cuphead,Javier García,9,Arte y sadismo en partes iguales,Visualmente una obra de arte. Los jefes son brutalmente difíciles pero justos.,145,2024-05-01
+24,37,7,Portal 2,Pablo Hernández,10,Masterclass de diseño de juegos,Cada puzzle está perfectamente diseñado. El cooperativo con un amigo es de lo mejor.,223,2024-05-04
+25,93,5,Helldivers 2,David Rodríguez,9,Fenómeno del año,El juego cooperativo más divertido de 2024. La comunidad es increíble.,345,2024-05-08
+26,92,11,Palworld,Alejandro Ruiz,7,Adictivo aunque polémico,Muy adictivo a pesar de las polémicas. El bucle de gameplay engancha muchísimo.,134,2024-05-12
+27,86,6,Hogwarts Legacy,Ana Sánchez,8,El sueño de todo fan de HP,Explorar Hogwarts es mágico literalmente. El mundo es precioso y hay mucho que hacer.,167,2024-05-15
+28,65,5,Doom Eternal,David Rodríguez,10,Metal y demonios al máximo,El shooter más rápido y satisfactorio. La banda sonora te hace invencible.,234,2024-05-18
+29,52,13,Civilization VI,Raúl Díaz,9,Un turno más... 5 horas después,La franquicia Civ es una trampa perfecta. Siempre quieres hacer un turno más.,189,2024-05-22
+30,17,7,Terraria,Pablo Hernández,10,Más contenido que muchos AAA,"Terraria es infinito. Horas y horas de exploración, construcción y combate.",212,2024-05-25

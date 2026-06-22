@@ -1,19 +1,19 @@
 const mongoose=require('mongoose');
-const fs=require('fs');
-const path=require('path');
-const bcrypt=require('bcrypt');
-const dotenv=require('dotenv');
+const fs=require('fs');//Fs es nos permite trabajar cojn diferentes archivos, en este caso lo vamos a usar para leer el archivo CSV que contiene los datos de los usuarios
+const path=require('path');//Nos permite guardar la ruta del archivo CSV de manera correcta, independientemente del sistema operativo que estemos usando
+const bcrypt=require('bcrypt');//Nos permite encriptar las contraseñas,una vez que hemos hecho el seeds
+const dotenv=require('dotenv');//Permite cargar variables de entorno del archivo .env, en este caso lo vamos a usar para cargar la URI de la base de datos y la clave secreta para el JWT.
 const Usuario=require('../models/Users');
-dotenv.config({path:path.join(__dirname,'../../.env')});
+dotenv.config({path:path.join(__dirname,'../../.env')});//Nos permite cargar la variavle de entrono que está respectiva carpeta raiz
 
 const seedUsers=async()=>{
     try{
-        await mongoose.connect(process.env.Mongo_URI);
-        const csvData=fs.readFileSync(path.join(__dirname,'../data/CSV/Users.csv'),'utf-8');
-        const lines=csvData.trim().split('\n');
-        const headers=lines[0].split(',').map(h=>h.replace(/"/g,'').trim());
+        await mongoose.connect(process.env.Mongo_URI);//Primero nos conectamos con la BDA
+        const csvData=fs.readFileSync(path.join(__dirname,'../data/CSV/Users.csv'),'utf-8');//Luego transformamos el xlsx en csv
+        const lines=csvData.trim().split('\n');//Separamos el csv mediante un split y vamos saltando lineas
+        const headers=lines[0].split(',').map(h=>h.replace(/"/g,'').trim());//Obtenemos los headers del csv, para eso necesitamos hacer un split por comas y luego eliminar las comillas y los espacios en blanco
         const users=lines.slice(1).map(line=>{
-            const values=line.split(',');
+            const values=line.split(',');//Loegos separamos las lienas con comas
             return {
                 nombre:values[1]?.trim(),
                 email:values[2]?.trim(),

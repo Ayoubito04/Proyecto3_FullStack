@@ -7,11 +7,14 @@ const connectDB=require('./src/db/db');
 //Ahora necesitamos configurar el puerto en el que se ejecutará nuestro servidor, para eso necesitamos importar dotenv
 require('dotenv').config();
 const usersRoutes=require('./src/routes/Users.route');
+const gamesRoutes=require('./src/routes/Games.route');
 //Ahora necesitamos configurar el puerto en el que se ejecutará nuestro servidor, para eso necesitamos importar dotenv
 const PORT=process.env.PORT || 3000;
 
 app.use(express.json());
 app.use('/api/users', usersRoutes);
+app.use('/api/games', gamesRoutes);
+
 
 //Conectamos a la base de datos
 connectDB();

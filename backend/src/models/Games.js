@@ -11,7 +11,7 @@ title:{
     type:String,
     required:true
 },
-gnre:{
+genre:{
     type:String,
     required:true
 },

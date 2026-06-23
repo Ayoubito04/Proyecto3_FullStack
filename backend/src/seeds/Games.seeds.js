@@ -30,7 +30,7 @@ const seedGames=async()=>{
             return {
                 id:parseInt(values[0]?.trim()),//El id lo convertimos a entero
                 title:values[1]?.trim(),
-                gnre:values[2]?.trim(),
+                genre:values[2]?.trim(),
                 description:values[3]?.trim(),
                 price:parseFloat(values[4]?.trim()) || 0,
                 image:values[5]?.trim(),

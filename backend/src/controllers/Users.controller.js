@@ -48,7 +48,26 @@ const addGameToLibrary=async(req,res)=>{
         return res.status(500).json({message:'Error del servidor',error:error.message});
     }
 }
-
+const RemoveGameFromLibrary=async(req,res)=>{
+    try{
+        const {id, gameId}=req.params;
+        const game=await Games.findOne({id:parseInt(gameId)});
+        if(!game){
+            return res.status(404).json({message:'Juego no encontrado'});
+        }
+        const user=await Usuario.findOne({id:parseInt(id)});
+        if(!user){
+            return res.status(404).json({message:'Usuario no encontrado'});
+        }
+        if(!user.library.some(g=>g.toString()===game._id.toString())){
+            return res.status(400).json({message:'El juego no está en la biblioteca'});
+        }
+        await Usuario.findOneAndUpdate({id:parseInt(id)},{$pull:{library:game._id}},{new:true});
+        return res.status(200).json({message:'Juego eliminado de la biblioteca correctamente'});
+    }catch(error){
+        return res.status(500).json({message:'Error del servidor',error:error.message});
+    }
+}
 const getLibrary=async(req,res)=>{
     try{
         const {id}=req.params;
@@ -65,4 +84,4 @@ const getLibrary=async(req,res)=>{
     }
 }
 
-module.exports={DeleteUser, EditUser, addGameToLibrary, getLibrary};
+module.exports={DeleteUser, EditUser, addGameToLibrary, RemoveGameFromLibrary, getLibrary};

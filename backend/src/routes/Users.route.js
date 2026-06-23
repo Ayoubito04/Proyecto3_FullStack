@@ -3,7 +3,7 @@ const express=require('express');
 const router=express.Router();
 const {registerUser}=require('../controllers/auth/Register');
 const {loginUser}=require('../controllers/auth/Login');
-const {EditUser,DeleteUser,addGameToLibrary,getLibrary}=require('../controllers/Users.controller');
+const {EditUser,DeleteUser,addGameToLibrary,getLibrary,RemoveGameFromLibrary}=require('../controllers/Users.controller');
 const {verifyToken}=require('../middlewares/auth.middleware');
 
 
@@ -15,6 +15,7 @@ router.post('/login',loginUser);
 router.put('/edit/:id',verifyToken,EditUser);
 router.delete('/delete/:id',verifyToken,DeleteUser);
 router.post('/:id/library/:gameId',verifyToken,addGameToLibrary);
+router.delete('/:id/library/:gameId',verifyToken,RemoveGameFromLibrary);
 router.get('/:id/library',verifyToken,getLibrary);
 
 module.exports=router;

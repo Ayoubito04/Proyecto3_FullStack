@@ -49,6 +49,14 @@ const FilterGames=async(req,res)=>{
         return res.status(500).json({message:'Error del servidor'});
       }
 }
+const GameById=async(req,res)=>{
+    try {
+        const game = await Games.findOne({ id: parseInt(req.params.gameId) });
+        if (!game) return res.status(404).json({ message: 'Juego no encontrado' });
+        return res.status(200).json(game);
+    } catch (error) {
+        return res.status(500).json({ message: 'Error del servidor' });
+    }
+}
 
-module.exports={GetAllGames,FilterGames};
-module.exports={GetAllGames,FilterGames};
+module.exports={GetAllGames,FilterGames,GameById};

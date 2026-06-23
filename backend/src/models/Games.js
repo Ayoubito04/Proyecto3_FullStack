@@ -46,7 +46,23 @@ rating:{
 platform:{
     type:String,
     required:true
-}
+},
+minspecs:{
+    os:{
+        type:String
+    },
+     cpu: { type: String },
+        ram: { type: Number },
+        gpu: { type: String },
+        storage: { type: Number }
+},
+   recSpecs: {
+        os: { type: String },
+        cpu: { type: String },
+        ram: { type: Number },
+        gpu: { type: String },
+        storage: { type: Number }
+    }
 },{
     timestamps:true
 

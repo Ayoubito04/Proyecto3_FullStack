@@ -1,12 +1,13 @@
 const Usuario=require('../models/Users');
+const Games=require('../models/Games');
 
 const DeleteUser=async(req,res)=>{
     try{
-        const user=await Usuario.findById(req.params.id);
+        const user=await Usuario.findOne({id:parseInt(req.params.id)});
         if(!user){
             return res.status(404).json({message:'Usuario no encontrado'});
         }
-        await Usuario.findByIdAndDelete(req.params.id);
+        await Usuario.findOneAndDelete({id:parseInt(req.params.id)});
         return res.status(200).json({message:'Usuario eliminado correctamente'});
     }catch(error){
         return res.status(500).json({message:'Error del servidor'});
@@ -14,18 +15,54 @@ const DeleteUser=async(req,res)=>{
 }
 const EditUser=async(req,res)=>{
     try{
-        const user=await Usuario.findById(req.params.id);
+        const user=await Usuario.findOne({id:parseInt(req.params.id)});
         if(!user){
             return res.status(404).json({message:'Usuario no encontrado'});
         }
-        //Si el usuario no existe,no se podrán editar los datos, para eso necesitamos usar el método findByIdAndUpdate de mongoose
-        const updatedUser=await Usuario.findByIdAndUpdate(req.params.id,req.body,{new:true});
+        const updatedUser=await Usuario.findOneAndUpdate({id:parseInt(req.params.id)},req.body,{new:true});
         return res.status(200).json({message:'Usuario actualizado correctamente',updatedUser});
     }catch(error){
         return res.status(500).json({message:'Error del servidor'});
 
     }
 }
+//Vamos a crear una función para que el usuario pueda guardar un juego en la biblioteca, para eso necesitamos usar el método findByIdAndUpdate de mongoose
+const addGameToLibrary=async(req,res)=>{
+    try{
+        const {id, gameId}=req.params;
 
+        const game=await Games.findOne({id:parseInt(gameId)});
+        if(!game){
+            return res.status(404).json({message:'Juego no encontrado'});
+        }
+        const user=await Usuario.findOne({id:parseInt(id)});
+        if(!user){
+            return res.status(404).json({message:'Usuario no encontrado'});
+        }
+        if(user.library.some(g=>g.toString()===game._id.toString())){
+            return res.status(400).json({message:'El juego ya está en la biblioteca'});
+        }
+        await Usuario.findOneAndUpdate({id:parseInt(id)},{$addToSet:{library:game._id}},{new:true});
+        return res.status(200).json({message:'Juego agregado a la biblioteca correctamente'});
+    }catch(error){
+        return res.status(500).json({message:'Error del servidor',error:error.message});
+    }
+}
 
-module.exports={DeleteUser, EditUser};
+const getLibrary=async(req,res)=>{
+    try{
+        const {id}=req.params;
+        const user=await Usuario.findOne({id:parseInt(id)}).populate('library');
+        if(!user){
+            return res.status(404).json({message:'Usuario no encontrado'});
+        }
+        if(user.library.length===0){
+            return res.status(404).json({message:'La biblioteca está vacía'});
+        }
+        return res.status(200).json(user.library);
+    }catch(error){
+        return res.status(500).json({message:'Error del servidor',error:error.message});
+    }
+}
+
+module.exports={DeleteUser, EditUser, addGameToLibrary, getLibrary};

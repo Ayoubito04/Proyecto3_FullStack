@@ -23,7 +23,16 @@ const loginUser=async(req,res)=>{
             {expiresIn:'24h'}
         );
         //Aquí se generará un token JWT que contendrá el id y el email del usuario, además de una fecha de expiración de 24 horas
-        return res.status(200).json({message:'Usuario logueado correctamente', token});
+        return res.status(200).json({
+            message:'Usuario logueado correctamente',
+            token,
+            user:{
+                _id:user._id,
+                nombre:user.nombre,
+                email:user.email,
+                avatar:user.avatar
+            }
+        });
     }catch(error){
         return res.status(500).json({message:'Error del servidor'});
     }

@@ -38,7 +38,21 @@ const seedGames=async()=>{
                 developer:values[7]?.trim(),
                 publisher:values[8]?.trim(),
                 rating:parseFloat(values[9]?.trim()) || 0,
-                platform:values[10]?.trim()
+                platform:values[10]?.trim(),
+                minspecs:{
+                    os:values[11]?.trim() || undefined,
+                    cpu:values[12]?.trim() || undefined,
+                    ram:parseFloat(values[13]?.trim()) || undefined,
+                    gpu:values[14]?.trim() || undefined,
+                    storage:parseFloat(values[15]?.trim()) || undefined
+                },
+                recSpecs:{
+                    os:values[16]?.trim() || undefined,
+                    cpu:values[17]?.trim() || undefined,
+                    ram:parseFloat(values[18]?.trim()) || undefined,
+                    gpu:values[19]?.trim() || undefined,
+                    storage:parseFloat(values[20]?.trim()) || undefined
+                }
             };
         });
         await Games.insertMany(games);

@@ -19,17 +19,23 @@ const FilterGames=async(req,res)=>{
       //Vamos a filtrar los juegos por título, género y plataforma, para eso necesitamos usar el método find de mongoose
       try{
         //Vamos a filtrar todos los juegos que contengan el título, género y plataforma que nos pasan por query params, para eso necesitamos usar el método find de mongoose
-        const {title,genre,platform}=req.query;
+        const {title,genre,platform,minOs,minCpu,minGpu,minRam,minStorage,recOs,recCpu,recGpu,recRam,recStorage}=req.query;
         const filter={};
-        if(title){
-            filter.title={$regex:title,$options:'i'};//El $regex nos permite buscar por expresión regular, el $options:'i' nos permite buscar sin importar mayúsculas o minúsculas
-        }
-        if(genre){
-            filter.genre={$regex:genre,$options:'i'};
-        }
-        if(platform){
-            filter.platform={$regex:platform,$options:'i'};
-        }
+        if(title)    filter.title={$regex:title,$options:'i'};
+        if(genre)    filter.genre={$regex:genre,$options:'i'};
+        if(platform) filter.platform={$regex:platform,$options:'i'};
+        // Specs mínimas
+        if(minOs)      filter['minspecs.os']={$regex:minOs,$options:'i'};
+        if(minCpu)     filter['minspecs.cpu']={$regex:minCpu,$options:'i'};
+        if(minGpu)     filter['minspecs.gpu']={$regex:minGpu,$options:'i'};
+        if(minRam)     filter['minspecs.ram']={$lte:parseInt(minRam,10)};
+        if(minStorage) filter['minspecs.storage']={$lte:parseInt(minStorage,10)};
+        // Specs recomendadas
+        if(recOs)      filter['recSpecs.os']={$regex:recOs,$options:'i'};
+        if(recCpu)     filter['recSpecs.cpu']={$regex:recCpu,$options:'i'};
+        if(recGpu)     filter['recSpecs.gpu']={$regex:recGpu,$options:'i'};
+        if(recRam)     filter['recSpecs.ram']={$lte:parseInt(recRam,10)};
+        if(recStorage) filter['recSpecs.storage']={$lte:parseInt(recStorage,10)};
         //Ahora vamos a buscar los juegos que cumplan con el filtro que acabamos de crear, para eso necesitamos usar el método find de mongoose
         const games=await Games.find(filter);
          if(games.length===0){
@@ -43,4 +49,6 @@ const FilterGames=async(req,res)=>{
         return res.status(500).json({message:'Error del servidor'});
       }
 }
+
+module.exports={GetAllGames,FilterGames};
 module.exports={GetAllGames,FilterGames};

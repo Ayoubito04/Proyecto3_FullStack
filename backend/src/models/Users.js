@@ -36,7 +36,11 @@ const usuarioSchema=new mongoose.Schema({
     bio:{
         type:String,
         default:""
-    }
+    },
+        library:[{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Game'
+        }]
 },{
     timestamps:true
 });

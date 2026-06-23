@@ -9,6 +9,9 @@ require('dotenv').config();
 const usersRoutes=require('./src/routes/Users.route');
 const gamesRoutes=require('./src/routes/Games.route');
 const reviewsRoutes=require('./src/routes/Reviews.route');
+//Vamos a intentar que el frontend se comunique con el servidor, para eso necesitamos instalar cors
+const cors=require('cors');
+app.use(cors());
 //Ahora necesitamos configurar el puerto en el que se ejecutará nuestro servidor, para eso necesitamos importar dotenv
 const PORT=process.env.PORT || 3000;
 

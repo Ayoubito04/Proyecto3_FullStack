@@ -1,152 +1,162 @@
-import { useEffect, useMemo, useState } from "react";
-import { getAllGames } from "../services/games.services";
+import { useCallback, useMemo, useState } from "react";
 import GameCard from "../components/GameCard/GameCard";
+import Loader from "../components/Loader/Loader";
+import EmptyState from "../components/EmptyState/EmptyState";
+import { useAuth } from "../context/AuthContext";
+import { useDebounce } from "../hooks/useDebounce";
+import { useGames } from "../hooks/useGames";
+import { addGameToLibrary } from "../services/users.services";
+import "./Games.css";
 
 const Games = () => {
-  const [games, setGames] = useState([]);
+  const { games, loading, error } = useGames();
+  const { isAuthenticated, token, userId } = useAuth();
   const [search, setSearch] = useState("");
   const [genre, setGenre] = useState("all");
   const [platform, setPlatform] = useState("all");
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+  const [price, setPrice] = useState("all");
+  const [sort, setSort] = useState("rating-desc");
+  const [message, setMessage] = useState("");
+  const debouncedSearch = useDebounce(search, 250);
 
-  useEffect(() => {
-    const loadGames = async () => {
-      try {
-        setLoading(true);
-        setError("");
-
-        const response = await getAllGames();
-        setGames(response.data);
-      } catch (error) {
-        setError("No se han podido cargar los videojuegos.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadGames();
-  }, []);
-
-  const genres = useMemo(() => {
-    const uniqueGenres = games
-      .map((game) => game.genre || game.genero)
-      .filter(Boolean);
-
-    return [...new Set(uniqueGenres)];
-  }, [games]);
+  const genres = useMemo(() => [...new Set(games.map((game) => game.genre).filter(Boolean))].sort(), [games]);
 
   const platforms = useMemo(() => {
-    const uniquePlatforms = games
-      .map((game) => game.platform || game.plataforma)
-      .filter(Boolean);
-
-    return [...new Set(uniquePlatforms)];
+    const values = games.flatMap((game) => String(game.platform || "").split("/").map((item) => item.trim()).filter(Boolean));
+    return [...new Set(values)].sort();
   }, [games]);
 
   const filteredGames = useMemo(() => {
-    return games.filter((game) => {
-      const title = game.title || game.nombre || "";
-      const gameGenre = game.genre || game.genero || "";
-      const gamePlatform = game.platform || game.plataforma || "";
+    const cleanSearch = debouncedSearch.trim().toLowerCase();
 
-      const matchesSearch = title
-        .toLowerCase()
-        .includes(search.toLowerCase());
+    const result = games.filter((game) => {
+      const title = game.title?.toLowerCase() || "";
+      const developer = game.developer?.toLowerCase() || "";
+      const matchesSearch = !cleanSearch || title.includes(cleanSearch) || developer.includes(cleanSearch);
+      const matchesGenre = genre === "all" || game.genre === genre;
+      const matchesPlatform = platform === "all" || String(game.platform).toLowerCase().includes(platform.toLowerCase());
+      const matchesPrice = price === "all" || (price === "free" ? Number(game.price) === 0 : Number(game.price) > 0);
 
-      const matchesGenre = genre === "all" || gameGenre === genre;
-      const matchesPlatform = platform === "all" || gamePlatform === platform;
-
-      return matchesSearch && matchesGenre && matchesPlatform;
+      return matchesSearch && matchesGenre && matchesPlatform && matchesPrice;
     });
-  }, [games, search, genre, platform]);
+
+    return result.sort((a, b) => {
+      if (sort === "rating-desc") return b.rating - a.rating;
+      if (sort === "rating-asc") return a.rating - b.rating;
+      if (sort === "price-asc") return a.price - b.price;
+      if (sort === "price-desc") return b.price - a.price;
+      return a.title.localeCompare(b.title);
+    });
+  }, [games, debouncedSearch, genre, platform, price, sort]);
+
+  const handleAddToLibrary = useCallback(
+    async (gameId) => {
+      if (!isAuthenticated) {
+        setMessage("Inicia sesión para añadir juegos a tu biblioteca.");
+        return;
+      }
+
+      try {
+        await addGameToLibrary(userId, gameId, token);
+        setMessage("Juego añadido a tu biblioteca.");
+      } catch (error) {
+        setMessage(error.response?.data?.message || "No se ha podido añadir el juego.");
+      }
+    },
+    [isAuthenticated, token, userId]
+  );
 
   const resetFilters = () => {
     setSearch("");
     setGenre("all");
     setPlatform("all");
+    setPrice("all");
+    setSort("rating-desc");
   };
 
-  if (loading) {
-    return (
-      <main className="games-page">
-        <p>Cargando videojuegos...</p>
-      </main>
-    );
-  }
+  if (loading) return <main className="page"><Loader text="Cargando catálogo..." /></main>;
 
   if (error) {
     return (
-      <main className="games-page">
-        <p>{error}</p>
+      <main className="page">
+        <EmptyState title="No se ha podido cargar el catálogo" text={error} />
       </main>
     );
   }
 
   return (
-    <main className="games-page">
-      <section className="games-hero">
-        <h1>Galería de videojuegos</h1>
-        <p>
-          Explora el catálogo completo, busca tus videojuegos favoritos y filtra
-          por género o plataforma.
+    <main className="page games-page">
+      <section className="page-header games-header">
+        <span className="eyebrow">Catálogo</span>
+        <h1 className="page-title">Galería de videojuegos</h1>
+        <p className="page-subtitle">
+          Filtra, busca y descubre títulos para guardar en tu biblioteca personal.
         </p>
       </section>
 
-      <section className="games-filters" aria-label="Buscador y filtros">
-        <input
-          type="text"
-          placeholder="Buscar videojuego..."
-          value={search}
-          onChange={(event) => setSearch(event.target.value)}
-        />
+      <section className="games-toolbar glass-panel" aria-label="Filtros de videojuegos">
+        <label className="form-field games-search">
+          Buscar
+          <input
+            type="search"
+            placeholder="Busca por título o desarrollador..."
+            value={search}
+            onChange={(event) => setSearch(event.target.value)}
+          />
+        </label>
 
-        <select
-          value={genre}
-          onChange={(event) => setGenre(event.target.value)}
-        >
-          <option value="all">Todos los géneros</option>
-          {genres.map((genreOption) => (
-            <option key={genreOption} value={genreOption}>
-              {genreOption}
-            </option>
-          ))}
-        </select>
+        <label className="form-field">
+          Género
+          <select value={genre} onChange={(event) => setGenre(event.target.value)}>
+            <option value="all">Todos</option>
+            {genres.map((item) => <option key={item} value={item}>{item}</option>)}
+          </select>
+        </label>
 
-        <select
-          value={platform}
-          onChange={(event) => setPlatform(event.target.value)}
-        >
-          <option value="all">Todas las plataformas</option>
-          {platforms.map((platformOption) => (
-            <option key={platformOption} value={platformOption}>
-              {platformOption}
-            </option>
-          ))}
-        </select>
+        <label className="form-field">
+          Plataforma
+          <select value={platform} onChange={(event) => setPlatform(event.target.value)}>
+            <option value="all">Todas</option>
+            {platforms.map((item) => <option key={item} value={item}>{item}</option>)}
+          </select>
+        </label>
 
-        <button type="button" onClick={resetFilters}>
-          Limpiar filtros
-        </button>
+        <label className="form-field">
+          Precio
+          <select value={price} onChange={(event) => setPrice(event.target.value)}>
+            <option value="all">Todos</option>
+            <option value="free">Gratis</option>
+            <option value="paid">De pago</option>
+          </select>
+        </label>
+
+        <label className="form-field">
+          Ordenar
+          <select value={sort} onChange={(event) => setSort(event.target.value)}>
+            <option value="rating-desc">Mejor valoración</option>
+            <option value="rating-asc">Menor valoración</option>
+            <option value="price-asc">Precio ascendente</option>
+            <option value="price-desc">Precio descendente</option>
+            <option value="title-asc">Título A-Z</option>
+          </select>
+        </label>
+
+        <button className="btn" type="button" onClick={resetFilters}>Limpiar</button>
       </section>
 
-      <section className="games-results">
-        <p>
-          Mostrando {filteredGames.length} de {games.length} videojuegos
-        </p>
-      </section>
+      <div className="games-count">
+        <p>Mostrando <strong>{filteredGames.length}</strong> de <strong>{games.length}</strong> videojuegos</p>
+        {message && <p className="message">{message}</p>}
+      </div>
 
-      {filteredGames.length > 0 ? (
+      {filteredGames.length ? (
         <section className="games-grid">
           {filteredGames.map((game) => (
-            <GameCard key={game._id} game={game} />
+            <GameCard key={game._id} game={game} onAdd={handleAddToLibrary} />
           ))}
         </section>
       ) : (
-        <section className="games-empty">
-          <h2>No se han encontrado videojuegos</h2>
-          <p>Prueba con otro nombre, género o plataforma.</p>
-        </section>
+        <EmptyState title="No hay resultados" text="Prueba a cambiar la búsqueda o limpiar los filtros." />
       )}
     </main>
   );

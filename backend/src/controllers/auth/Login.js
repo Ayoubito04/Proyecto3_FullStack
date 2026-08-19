@@ -27,10 +27,14 @@ const loginUser=async(req,res)=>{
             message:'Usuario logueado correctamente',
             token,
             user:{
+                id:user.id,
                 _id:user._id,
                 nombre:user.nombre,
                 email:user.email,
-                avatar:user.avatar
+                avatar:user.avatar,
+                city:user.city,
+                country:user.country,
+                bio:user.bio
             }
         });
     } catch(error) {

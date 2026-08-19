@@ -1,11 +1,7 @@
-import axios from "axios";
+import { api } from "./api";
 
-const BASE_URL = `${import.meta.env.VITE_API_URL || "http://localhost:3000/api"}/games`;
+export const getAllGames = () => api.get("/games");
 
-export const getAllGames = async () => {
-  return axios.get(BASE_URL);
-};
+export const getGameById = (gameId) => api.get(`/games/${gameId}`);
 
-export const getGameById = async (id) => {
-  return axios.get(`${BASE_URL}/${id}`);
-};
+export const filterGames = (params) => api.get("/games/filter", { params });

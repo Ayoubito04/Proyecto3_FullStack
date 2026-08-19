@@ -1,26 +1,33 @@
-//Vamos a traer los servicios de usuarios, para eso necesitamos crear una carpeta llamada services y dentro de ella un archivo llamado users.services.jsx
-//En este archivo vamos a crear las funciones que se comunicarán con el backend, para eso necesitamos usar axios
-import axios from 'axios';
+import { api } from "./api";
 
-//Vamos a crear una función para registrar un usuario, para eso necesitamos usar el método post de axios
-const BASE_URL = `${import.meta.env.VITE_API_URL}/users`;
+export const registerUser = (userData) => api.post("/users/registro", userData);
 
-export const registerUser=async(userData)=>axios.post(`${BASE_URL}/registro`,userData);
+export const loginUser = (userData) => api.post("/users/login", userData);
 
-export const loginUser=async(userData)=>axios.post(`${BASE_URL}/login`,userData);
+export const editUser = (id, userData, token) =>
+  api.put(`/users/edit/${id}`, userData, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      ...(userData instanceof FormData ? {} : { "Content-Type": "application/json" }),
+    },
+  });
 
-export const editUser=async(id,userData,token)=>axios.put(`${BASE_URL}/edit/${id}`,userData,{
-    headers:{Authorization:`Bearer ${token}`}
-});
-export const deleteUser=async(id,token)=>axios.delete(`${BASE_URL}/delete/${id}`,{
-    headers:{Authorization:`Bearer ${token}`}
-});
-export const addGameToLibrary=async(id,gameId,token)=>axios.post(`${BASE_URL}/${id}/library/${gameId}`,{},{
-    headers:{Authorization:`Bearer ${token}`}
-});
-export const removeGameFromLibrary=async(id,gameId,token)=>axios.delete(`${BASE_URL}/${id}/library/${gameId}`,{
-    headers:{Authorization:`Bearer ${token}`}
-});
-export const getLibrary=async(id,token)=>axios.get(`${BASE_URL}/${id}/library`,{
-    headers:{Authorization:`Bearer ${token}`}
-});
+export const deleteUser = (id, token) =>
+  api.delete(`/users/delete/${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+export const addGameToLibrary = (id, gameId, token) =>
+  api.post(`/users/${id}/library/${gameId}`, {}, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+export const removeGameFromLibrary = (id, gameId, token) =>
+  api.delete(`/users/${id}/library/${gameId}`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+
+export const getLibrary = (id, token) =>
+  api.get(`/users/${id}/library`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });

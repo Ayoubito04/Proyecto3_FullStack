@@ -1,19 +1,16 @@
-import axios from "axios";
+import { api } from "./api";
 
-const BASE_URL = "http://localhost:3000/api/reviews";
-
-export const getReviewsByGame = (gameId) =>
-  axios.get(`${BASE_URL}/${gameId}`);
+export const getReviewsByGame = (gameId) => api.get(`/reviews/${gameId}`);
 
 export const createReview = (gameId, reviewData, token) =>
-  axios.post(`${BASE_URL}/${gameId}`, reviewData, {
+  api.post(`/reviews/${gameId}`, reviewData, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
 
 export const deleteReview = (reviewId, token) =>
-  axios.delete(`${BASE_URL}/${reviewId}`, {
+  api.delete(`/reviews/${reviewId}`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },

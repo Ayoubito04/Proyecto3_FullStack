@@ -10,15 +10,15 @@ function Register() {
         email: '',
         password: ''
     });
-
+   //Primero creamos un estado para manejar datos de usuario,esto definirá la lógica de la función
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefault();
+        e.preventDefault();//Evita que la página se recarge
         try {
-            await registerUser(formData);
+            await registerUser(formData);//Llama a la  función registrar que está dentro de servicios
             navigate('/login'); // redirige al login tras registrarse
         } catch (error) {
             setError(error.response?.data?.message || 'Error al registrarse');

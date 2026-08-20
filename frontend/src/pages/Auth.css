@@ -1,0 +1,45 @@
+.auth-page {
+  min-height: calc(100vh - 76px - 110px);
+  display: grid;
+  place-items: center;
+}
+
+.auth-card {
+  width: min(100%, 520px);
+  padding: clamp(1.35rem, 4vw, 2.2rem);
+  display: grid;
+  gap: 1rem;
+}
+
+.auth-card h1 {
+  margin: 0;
+  font-size: clamp(2.1rem, 5vw, 3.8rem);
+  line-height: 0.96;
+  letter-spacing: -0.06em;
+}
+
+.auth-card p {
+  margin: 0;
+  color: var(--color-text-soft);
+  line-height: 1.6;
+}
+
+.auth-form {
+  display: grid;
+  gap: 1rem;
+  margin-top: 0.6rem;
+}
+
+.auth-form .btn {
+  min-height: 3.25rem;
+}
+
+.auth-switch {
+  text-align: center;
+}
+
+.auth-switch a {
+  color: var(--color-primary-2);
+  font-weight: 900;
+  text-decoration: none;
+}

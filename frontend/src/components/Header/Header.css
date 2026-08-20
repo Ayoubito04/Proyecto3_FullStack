@@ -1,0 +1,134 @@
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  border-bottom: 1px solid var(--color-border);
+  background: rgba(8, 10, 18, 0.78);
+  backdrop-filter: blur(18px);
+}
+
+.site-header__inner {
+  width: min(var(--max-width), calc(100% - 2rem));
+  min-height: 76px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.brand {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  min-width: 9.5rem;
+}
+
+.brand__logo {
+  width: clamp(8.8rem, 13vw, 12.5rem);
+  height: auto;
+  display: block;
+  object-fit: contain;
+  filter: drop-shadow(0 0 14px rgba(0, 212, 255, 0.16));
+}
+
+.main-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 0.35rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.main-nav a {
+  padding: 0.65rem 0.9rem;
+  border-radius: var(--radius-pill);
+  color: var(--color-text-soft);
+  text-decoration: none;
+  font-size: 0.92rem;
+  font-weight: 800;
+  transition: color 0.2s, background 0.2s;
+}
+
+.main-nav a:hover,
+.main-nav a.active {
+  color: var(--color-text);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+}
+
+.btn--ghost {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.user-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  max-width: 190px;
+  color: var(--color-text-soft);
+  font-weight: 800;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.user-chip img {
+  width: 2.15rem;
+  height: 2.15rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--color-border);
+}
+
+.header-logout {
+  padding-inline: 0.9rem;
+}
+
+@media (max-width: 920px) {
+  .site-header__inner {
+    flex-wrap: wrap;
+    padding: 0.75rem 0;
+  }
+
+  .main-nav {
+    order: 3;
+    width: 100%;
+    overflow-x: auto;
+    justify-content: flex-start;
+  }
+
+  .main-nav::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .user-chip {
+    display: none;
+  }
+
+  .header-actions .btn {
+    padding-inline: 0.8rem;
+    min-height: 2.45rem;
+    font-size: 0.85rem;
+  }
+}
+
+@media (max-width: 560px) {
+  .brand {
+    min-width: auto;
+  }
+
+  .brand__logo {
+    width: 7.6rem;
+  }
+}

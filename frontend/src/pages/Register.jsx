@@ -1,6 +1,7 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { registerUser } from '../services/users.services';
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { registerUser } from "../services/users.services";
+import "./Auth.css";
 
 function Register() {
     const navigate = useNavigate();
@@ -10,48 +11,55 @@ function Register() {
         email: '',
         password: ''
     });
-   //Primero creamos un estado para manejar datos de usuario,esto definirá la lógica de la función
+
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
     const handleSubmit = async (e) => {
-        e.preventDefault();//Evita que la página se recarge
+        e.preventDefault();
         try {
-            await registerUser(formData);//Llama a la  función registrar que está dentro de servicios
+            await registerUser(formData);
             navigate('/login'); // redirige al login tras registrarse
         } catch (error) {
             setError(error.response?.data?.message || 'Error al registrarse');
         }
     };
 
-    return (
-        <div>
-            <h1>Crear cuenta</h1>
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="text"
-                    name="nombre"
-                    placeholder="Nombre"
-                    onChange={handleChange}
-                />
-                <input
-                    type="email"
-                    name="email"
-                    placeholder="Email"
-                    onChange={handleChange}
-                />
-                <input
-                    type="password"
-                    name="password"
-                    placeholder="Contraseña"
-                    onChange={handleChange}
-                />
-                {error && <p>{error}</p>}
-                <button type="submit">Registrarse</button>
-            </form>
-        </div>
-    );
-}
+  return (
+    <main className="auth-page page">
+      <section className="auth-card glass-panel">
+        <span className="eyebrow">Nuevo perfil</span>
+        <h1>Crear cuenta</h1>
+        <p>Regístrate para crear tu biblioteca gamer y participar con reviews.</p>
+
+        <form className="auth-form" onSubmit={handleSubmit}>
+          <label className="form-field" htmlFor="nombre">
+            Nombre
+            <input id="nombre" type="text" name="nombre" placeholder="Tu nombre" value={formData.nombre} onChange={handleChange} required />
+          </label>
+
+          <label className="form-field" htmlFor="email">
+            Email
+            <input id="email" type="email" name="email" placeholder="tu@email.com" value={formData.email} onChange={handleChange} required />
+          </label>
+
+          <label className="form-field" htmlFor="password">
+            Contraseña
+            <input id="password" type="password" name="password" placeholder="Mínimo 6 caracteres" value={formData.password} onChange={handleChange} required minLength={6} />
+          </label>
+
+          {error && <p className="message message--error">{error}</p>}
+
+          <button className="btn btn--primary" type="submit" disabled={loading}>
+            {loading ? "Creando..." : "Crear cuenta"}
+          </button>
+        </form>
+
+        <p className="auth-switch">¿Ya tienes cuenta? <Link to="/login">Inicia sesión</Link></p>
+      </section>
+    </main>
+  );
+};
 
 export default Register;
